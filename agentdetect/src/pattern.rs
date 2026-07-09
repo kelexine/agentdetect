@@ -122,6 +122,16 @@ mod tests {
     #[test]
     fn env_pattern_matches_is_const_evaluable() {
         const MATCHES: bool = EnvPattern::Exact("WarpTerminal").matches("WarpTerminal");
+        // This `const { assert!(...) }` block is a genuine compile-time
+        // check that `.matches()` is usable in a const context — that's
+        // the entire point of the test. clippy's `assertions_on_constants`
+        // exists to catch pointless `assert!(true)` in *runtime* code; it
+        // doesn't apply to intentional const-block assertions, and newer
+        // clippy (1.9x+) knows that. MSRV 1.85's clippy (frozen March
+        // 2025) predates that refinement and still flags it under
+        // `-D warnings`, so silence it explicitly here rather than lose
+        // the check.
+        #[allow(clippy::assertions_on_constants)]
         const {
             assert!(MATCHES);
         }
