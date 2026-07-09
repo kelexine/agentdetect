@@ -50,8 +50,6 @@
 //! # }
 //! ```
 
-#![cfg(feature = "otel")]
-
 use std::time::Duration;
 
 use opentelemetry::{

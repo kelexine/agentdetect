@@ -48,8 +48,6 @@
 //!         │                              └────────────────────┘
 //! ```
 
-#![cfg(feature = "http")]
-
 use http::HeaderMap;
 
 use crate::detection::{AgentInfo, Confidence, Detection, RawSignal};
