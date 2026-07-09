@@ -1,0 +1,42 @@
+[package]
+name = "agentdetect-tower"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Tower / axum middleware that reads the agentdetect propagation header and emits OpenTelemetry signals."
+license.workspace = true
+repository.workspace = true
+readme = "README.md"
+keywords = ["ai", "agent", "detection", "opentelemetry", "tower"]
+categories = ["development-tools", "api-bindings", "asynchronous"]
+exclude = ["/target", "/.gitignore"]
+
+[lib]
+name = "agentdetect_tower"
+path = "src/lib.rs"
+
+[features]
+default = ["otel"]
+# OpenTelemetry span enrichment + metric emission (on by default).
+otel = ["dep:opentelemetry", "agentdetect/otel"]
+
+[dependencies]
+# `http` feature is required — the middleware reads the propagation header
+# via `agentdetect::propagation::read`.
+agentdetect = { workspace = true, features = ["http"] }
+http = { workspace = true }
+opentelemetry = { workspace = true, optional = true }
+tower-layer = { workspace = true }
+tower-service = { workspace = true }
+futures-util = { workspace = true }
+pin-project-lite = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+tower = { workspace = true, features = ["limit", "timeout", "util"] }
+bytes = "1"
+
+[[example]]
+name = "tower_demo"
+path = "examples/tower_demo.rs"

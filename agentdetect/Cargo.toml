@@ -1,0 +1,47 @@
+[package]
+name = "agentdetect"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Detect which AI agent harness is running this process (env-var only) + optional OpenTelemetry propagation."
+license.workspace = true
+repository.workspace = true
+readme = "README.md"
+keywords = ["ai", "agent", "detection", "opentelemetry", "observability"]
+categories = ["development-tools", "api-bindings", "config"]
+exclude = ["/target", "/.gitignore"]
+
+[lib]
+name = "agentdetect"
+path = "src/lib.rs"
+
+[features]
+default = []
+# Enable OpenTelemetry attribute / span / metric emission.
+otel = ["dep:opentelemetry"]
+# Enable HTTP propagation helpers (inject detection onto outgoing requests,
+# read detection from incoming requests via the `x-agentdetect-*` headers).
+# Required by `agentdetect-tower`.
+http = ["dep:http"]
+
+[dependencies]
+opentelemetry = { workspace = true, optional = true }
+http = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+
+# Examples that need optional features must be declared explicitly so cargo
+# skips them when the feature is disabled.
+[[example]]
+name = "otel_demo"
+required-features = ["otel"]
+
+[[example]]
+name = "axum_middleware"
+required-features = ["http", "otel"]
+
+[[example]]
+name = "cli_to_api"
+required-features = ["http", "otel"]

@@ -1,0 +1,43 @@
+# Rust build artifacts
+/target/
+**/target/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.iml
+.helix/
+.zed/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup / swap files
+*~
+*.swp
+*.swo
+*.bak
+*.orig
+*.rs.bk
+
+# Local env / secrets — never commit real credentials
+.env
+.env.*
+!.env.example
+
+# rust-analyzer / tooling caches
+rust-project.json
+.cargo/registry/
+.cargo/git/
+
+# Profiling / benchmark output
+perf.data
+perf.data.old
+flamegraph.svg
+*.profdata
+
+# Packaging output from `cargo publish --dry-run` / `cargo package`
+/target/package/
+

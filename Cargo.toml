@@ -1,0 +1,46 @@
+# agentdetect workspace
+#
+# Members:
+#   agentdetect         — core detection library (env vars + HTTP headers + JSON body)
+#   agentdetect-tower   — tower / axum middleware that wraps any HTTP service with
+#                         agentdetect detection + OpenTelemetry emission
+#
+# Build / test the entire workspace:
+#     cargo build --all-features --workspace
+#     cargo test  --all-features --workspace
+#     cargo clippy --all-features --workspace -- -D warnings
+#     cargo fmt --all --check
+
+[workspace]
+resolver = "2"
+members = ["agentdetect", "agentdetect-tower"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["kelexine <https://github.com/kelexine>"]
+license = "MIT"
+repository = "https://github.com/kelexine/agentdetect"
+
+[workspace.dependencies]
+# Internal crates — pinned to the workspace version.
+agentdetect = { path = "agentdetect", version = "0.1.0" }
+
+# External crates shared between members.
+http = "1"
+opentelemetry = { version = "0.27", default-features = false, features = ["trace", "metrics"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tower = { version = "0.5", default-features = false, features = ["util"] }
+tower-layer = "0.3"
+tower-service = "0.3"
+futures-util = { version = "0.3", default-features = false, features = ["alloc"] }
+pin-project-lite = "0.2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
