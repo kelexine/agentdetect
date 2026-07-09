@@ -117,7 +117,7 @@ Each carries:
 - One or more env-var checks (presence / exact / prefix patterns).
 - A `HarnessFamily` for vendor-level grouping (Anthropic, OpenAI, Google,
   GitHub, ByteDance, Cognition, Charm, Cursor, Block, Replit, AWS, Nous
-  Research, Community, Other).
+  Research, Warp, Zed, Augment, Community, Other).
 
 To list every harness at runtime:
 

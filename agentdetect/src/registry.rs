@@ -61,6 +61,9 @@ pub enum HarnessFamily {
     Replit,
     AWS,
     NousResearch,
+    Warp,
+    Zed,
+    Augment,
     Community,
     Other,
 }
@@ -82,6 +85,9 @@ impl HarnessFamily {
             Self::Replit => "replit",
             Self::AWS => "aws",
             Self::NousResearch => "nous-research",
+            Self::Warp => "warp",
+            Self::Zed => "zed",
+            Self::Augment => "augment",
             Self::Community => "community",
             Self::Other => "other",
         }
@@ -352,7 +358,7 @@ pub const AGENT_HARNESSES: &[(AgentHarnessKey, AgentHarness)] = &[
             repo_url: Some("https://github.com/augmentcode/auggie"),
             docs_url: Some("https://www.augmentcode.com"),
             description: Some("Auggie, the command-line coding agent from Augment Code."),
-            family: HarnessFamily::Other,
+            family: HarnessFamily::Augment,
             env_vars: &[EnvVarCheck {
                 name: "AUGMENT_AGENT",
                 pattern: EnvPattern::Any,
@@ -630,7 +636,7 @@ pub const AGENT_HARNESSES: &[(AgentHarnessKey, AgentHarness)] = &[
             repo_url: Some("https://github.com/warpdotdev/Warp"),
             docs_url: Some("https://docs.warp.dev"),
             description: Some("AI-powered terminal with an agentic Agent Mode."),
-            family: HarnessFamily::Other,
+            family: HarnessFamily::Warp,
             // Exact match: TERM_PROGRAM == "WarpTerminal"
             env_vars: &[EnvVarCheck {
                 name: "TERM_PROGRAM",
@@ -647,7 +653,7 @@ pub const AGENT_HARNESSES: &[(AgentHarnessKey, AgentHarness)] = &[
             description: Some(
                 "High-performance code editor with an integrated AI agent panel and terminal.",
             ),
-            family: HarnessFamily::Other,
+            family: HarnessFamily::Zed,
             env_vars: &[EnvVarCheck {
                 name: "ZED_TERM",
                 pattern: EnvPattern::Any,
@@ -831,6 +837,9 @@ mod tests {
         assert_eq!(HarnessFamily::Google.id(), "google");
         assert_eq!(HarnessFamily::GitHub.id(), "github");
         assert_eq!(HarnessFamily::Cognition.id(), "cognition");
+        assert_eq!(HarnessFamily::Warp.id(), "warp");
+        assert_eq!(HarnessFamily::Zed.id(), "zed");
+        assert_eq!(HarnessFamily::Augment.id(), "augment");
     }
 
     #[test]
@@ -848,5 +857,18 @@ mod tests {
     #[test]
     fn openai_family_contains_codex() {
         assert_eq!(AgentHarnessKey::Codex.info().family, HarnessFamily::OpenAI);
+    }
+
+    #[test]
+    fn warp_zed_augment_have_dedicated_families() {
+        // Regression test: these three were previously lumped into
+        // HarnessFamily::Other despite being single-vendor products just
+        // like Cursor, Replit, or Kiro. Each gets its own family now.
+        assert_eq!(AgentHarnessKey::Warp.info().family, HarnessFamily::Warp);
+        assert_eq!(AgentHarnessKey::Zed.info().family, HarnessFamily::Zed);
+        assert_eq!(
+            AgentHarnessKey::AugmentCli.info().family,
+            HarnessFamily::Augment
+        );
     }
 }

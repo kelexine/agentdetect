@@ -16,7 +16,7 @@ resolver = "2"
 members = ["agentdetect", "agentdetect-tower"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.85"
 authors = ["kelexine <https://github.com/kelexine>"]
@@ -25,7 +25,7 @@ repository = "https://github.com/kelexine/agentdetect"
 
 [workspace.dependencies]
 # Internal crates — pinned to the workspace version.
-agentdetect = { path = "agentdetect", version = "0.1.0" }
+agentdetect = { path = "agentdetect", version = "0.2.0" }
 
 # External crates shared between members.
 http = "1"

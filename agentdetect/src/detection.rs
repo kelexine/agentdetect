@@ -248,6 +248,97 @@ impl AgentInfo {
     pub fn is_openai(&self) -> bool {
         self.family == HarnessFamily::OpenAI
     }
+
+    /// Convenience accessor: is this agent in the Google family?
+    #[inline]
+    pub fn is_google(&self) -> bool {
+        self.family == HarnessFamily::Google
+    }
+
+    /// Convenience accessor: is this agent in the GitHub family?
+    #[inline]
+    pub fn is_github(&self) -> bool {
+        self.family == HarnessFamily::GitHub
+    }
+
+    /// Convenience accessor: is this agent in the ByteDance family?
+    #[inline]
+    pub fn is_bytedance(&self) -> bool {
+        self.family == HarnessFamily::ByteDance
+    }
+
+    /// Convenience accessor: is this agent in the Cognition family?
+    #[inline]
+    pub fn is_cognition(&self) -> bool {
+        self.family == HarnessFamily::Cognition
+    }
+
+    /// Convenience accessor: is this agent in the Charm family?
+    #[inline]
+    pub fn is_charm(&self) -> bool {
+        self.family == HarnessFamily::Charm
+    }
+
+    /// Convenience accessor: is this agent in the Cursor family?
+    #[inline]
+    pub fn is_cursor(&self) -> bool {
+        self.family == HarnessFamily::Cursor
+    }
+
+    /// Convenience accessor: is this agent in the Block family?
+    #[inline]
+    pub fn is_block(&self) -> bool {
+        self.family == HarnessFamily::Block
+    }
+
+    /// Convenience accessor: is this agent in the Replit family?
+    #[inline]
+    pub fn is_replit(&self) -> bool {
+        self.family == HarnessFamily::Replit
+    }
+
+    /// Convenience accessor: is this agent in the AWS family?
+    #[inline]
+    pub fn is_aws(&self) -> bool {
+        self.family == HarnessFamily::AWS
+    }
+
+    /// Convenience accessor: is this agent in the Nous Research family?
+    #[inline]
+    pub fn is_nous_research(&self) -> bool {
+        self.family == HarnessFamily::NousResearch
+    }
+
+    /// Convenience accessor: is this agent in the Warp family?
+    #[inline]
+    pub fn is_warp(&self) -> bool {
+        self.family == HarnessFamily::Warp
+    }
+
+    /// Convenience accessor: is this agent in the Zed family?
+    #[inline]
+    pub fn is_zed(&self) -> bool {
+        self.family == HarnessFamily::Zed
+    }
+
+    /// Convenience accessor: is this agent in the Augment family?
+    #[inline]
+    pub fn is_augment(&self) -> bool {
+        self.family == HarnessFamily::Augment
+    }
+
+    /// Convenience accessor: is this agent an unaffiliated community project?
+    #[inline]
+    pub fn is_community(&self) -> bool {
+        self.family == HarnessFamily::Community
+    }
+
+    /// Convenience accessor: does this agent fall outside every dedicated
+    /// family (including the [`AgentHarnessKey::Unknown`] sentinel)?
+    #[inline]
+    pub fn is_other(&self) -> bool {
+        self.family == HarnessFamily::Other
+    }
 }
 
 // ─── Detection ────────────────────────────────────────────────────────────────
@@ -364,6 +455,33 @@ mod tests {
         assert!(info.is_anthropic());
         assert!(!info.is_openai());
         assert!(info.version.is_none());
+    }
+
+    #[test]
+    fn all_family_convenience_methods_agree_with_family_field() {
+        // Every is_*() method must return true for exactly its own family
+        // and false for every other — for all 17 families, not just
+        // Anthropic/OpenAI. Warp is used as the probe subject since it's
+        // the harness whose family this test guards against regressing.
+        let info = AgentInfo::from_registry(AgentHarnessKey::Warp, None);
+        assert_eq!(info.family, HarnessFamily::Warp);
+        assert!(info.is_warp());
+        assert!(!info.is_anthropic());
+        assert!(!info.is_openai());
+        assert!(!info.is_google());
+        assert!(!info.is_github());
+        assert!(!info.is_bytedance());
+        assert!(!info.is_cognition());
+        assert!(!info.is_charm());
+        assert!(!info.is_cursor());
+        assert!(!info.is_block());
+        assert!(!info.is_replit());
+        assert!(!info.is_aws());
+        assert!(!info.is_nous_research());
+        assert!(!info.is_zed());
+        assert!(!info.is_augment());
+        assert!(!info.is_community());
+        assert!(!info.is_other());
     }
 
     #[test]
