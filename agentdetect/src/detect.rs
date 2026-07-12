@@ -197,17 +197,12 @@ fn build_detection(mut signals: Vec<RawSignal>) -> Option<Detection> {
     all_signals.extend(signals);
 
     let (key, confidence) = match &primary {
-        RawSignal::HarnessEnvVar {
-            key,
-            value: _,
-            pattern: _,
-            ..
-        } => (*key, Confidence::High),
+        RawSignal::HarnessEnvVar { key, .. } => (*key, Confidence::High),
         RawSignal::StandardEnvVar {
             resolved_key: Some(k),
             ..
         } => (*k, Confidence::Medium),
-        RawSignal::StandardEnvVar { value: _, .. } => {
+        RawSignal::StandardEnvVar { .. } => {
             // Unrecognised standard signal — use the real Unknown sentinel.
             return Some(Detection {
                 agent: AgentInfo::from_registry(AgentHarnessKey::Unknown, None),
